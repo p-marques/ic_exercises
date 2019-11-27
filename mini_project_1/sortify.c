@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include <time.h>
 
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
 		}
 		else if (user_input == 's')
 		{
-			print_status(level + 1, current_points, current_round);
+			print_status(level, current_points, current_round);
 		}
 		else if (user_input == 'p')
 		{
@@ -68,21 +69,27 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void order_numbers(int * numbers)
+void order_numbers(int * original_numbers, int * ordered_array)
 {
 	const unsigned int n = 4;
-	unsigned int i, j;
+	unsigned int k, i, j;
 	int t;
+
+	for (k = 0; k < n; k++)
+	{
+		*(ordered_array + k) = *(original_numbers + k);
+	}
+	
 
 	for (i = 0; i < n; i++)
 	{
 		for (j = i + 1; j < n; j++)
 		{
-			if (*(numbers + j) < *(numbers + i))
+			if (*(ordered_array + j) < *(ordered_array + i))
 			{
-				t = *(numbers + i);
-				*(numbers + i) = *(numbers + j);
-				*(numbers + j) = t;
+				t = *(ordered_array + i);
+				*(ordered_array + i) = *(ordered_array + j);
+				*(ordered_array + j) = t;
 			}
 			
 		}
@@ -92,7 +99,9 @@ void order_numbers(int * numbers)
 void play(unsigned int * level, unsigned int * current_round, unsigned int * current_points)
 {
 	unsigned int level_treshold[5] = {10, 20, 30, 40, 50};
-	int min_value[5] = {0, 0, -50, -100, -200}, max_value[5] = {10, 30, 30, 0, -100}, current_generated_numbers[4], current_player_numbers[4];
+	int min_value[5] = {0, 0, -50, -100, -200}, max_value[5] = {10, 30, 30, 0, -100}, 
+	current_generated_numbers[4], current_generated_numbers_ordered[4], current_player_numbers[4];
+	bool player_success = true, player_wins = false;
 
 	*current_round = *current_round + 1;
 
@@ -115,23 +124,47 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 		}
 	}
 
-	order_numbers(current_generated_numbers);
-	for (unsigned int i = 0; i < 4; i++)
+	order_numbers(current_generated_numbers, current_generated_numbers_ordered);
+	for (int i = 0; i < 4; i++)
 	{
-		printf("%d", current_generated_numbers[i]);
-		if (i < 3)
-		{
-			printf(", ");
-		}
-		else
-		{
-			printf("\n");
-		}
+		scanf("%d", &current_player_numbers[i]);
 	}
 
 	for (int i = 0; i < 4; i++)
 	{
-		scanf("%d", &current_player_numbers[i]);
+		if (current_player_numbers[i] != current_generated_numbers_ordered[i])
+		{
+			player_success = false;
+		}
+	}
+
+	if (player_success)
+	{
+		puts(MSG_WELL);
+
+		*current_points = *current_points + 5;
+		if (*current_points == level_treshold[*level])
+		{
+			if (*level == 4)
+			{
+				player_wins = true;
+			}
+			else
+			{
+				*level = *level + 1;
+			}
+		}
+	}
+	else
+	{
+		puts(MSG_WRONG);
+	}
+
+	if (*current_round == MAX_ROUNDS && !player_wins)
+	{
+		puts(MSG_MAX);
+		print_status(*level, *current_points, *current_round);
+		puts(MSG_OVER);
 	}
 }
 
@@ -151,7 +184,7 @@ int rand_number(const int min, const int max)
 void print_status(const int level, const int score, const int plays)
 {
 	puts("+-----------------------------+");
-	printf("| level:  %02d                  |\n", level);
+	printf("| level:  %02d                  |\n", level + 1);
 	printf("| points: %02d                  |\n", score);
 	printf("| plays:  %02d                  |\n", plays);
 	puts("+-----------------------------+");
