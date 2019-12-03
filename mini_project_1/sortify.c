@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		srand((int)argv[1]);
+		srand(*argv[1] - '0');
 	}
 
 	print_menu();
@@ -69,27 +69,21 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void order_numbers(int * original_numbers, int * ordered_array)
+void order_numbers(int * numbers)
 {
 	const unsigned int n = 4;
-	unsigned int k, i, j;
+	unsigned int i, j;
 	int t;
-
-	for (k = 0; k < n; k++)
-	{
-		*(ordered_array + k) = *(original_numbers + k);
-	}
 	
-
 	for (i = 0; i < n; i++)
 	{
 		for (j = i + 1; j < n; j++)
 		{
-			if (*(ordered_array + j) < *(ordered_array + i))
+			if (*(numbers + j) < *(numbers + i))
 			{
-				t = *(ordered_array + i);
-				*(ordered_array + i) = *(ordered_array + j);
-				*(ordered_array + j) = t;
+				t = *(numbers + i);
+				*(numbers + i) = *(numbers + j);
+				*(numbers + j) = t;
 			}
 			
 		}
@@ -99,8 +93,7 @@ void order_numbers(int * original_numbers, int * ordered_array)
 void play(unsigned int * level, unsigned int * current_round, unsigned int * current_points)
 {
 	unsigned int level_treshold[5] = {10, 20, 30, 40, 50};
-	int min_value[5] = {0, 0, -50, -100, -200}, max_value[5] = {10, 30, 30, 0, -100}, 
-	current_generated_numbers[4], current_generated_numbers_ordered[4], current_player_numbers[4];
+	int min_value[5] = {0, 0, -50, -100, -200}, max_value[5] = {10, 30, 30, 0, -100}, current_generated_numbers[4], current_player_numbers[4];
 	bool player_success = true, player_wins = false;
 
 	*current_round = *current_round + 1;
@@ -124,7 +117,7 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 		}
 	}
 
-	order_numbers(current_generated_numbers, current_generated_numbers_ordered);
+	order_numbers(current_generated_numbers);
 	for (int i = 0; i < 4; i++)
 	{
 		scanf("%d", &current_player_numbers[i]);
@@ -132,7 +125,7 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (current_player_numbers[i] != current_generated_numbers_ordered[i])
+		if (current_player_numbers[i] != current_generated_numbers[i])
 		{
 			player_success = false;
 		}
