@@ -69,6 +69,21 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+bool is_number_in_array(int * numbers, int n)
+{
+	unsigned int n = 4, i = 0;
+
+	for(i; i < 4; i++)
+	{
+		if(*(numbers + i) == n)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void order_numbers(int * numbers)
 {
 	const unsigned int n = 4;
@@ -94,7 +109,8 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 {
 	unsigned int level_treshold[5] = {10, 20, 30, 40, 50};
 	int min_value[5] = {0, 0, -50, -100, -200}, max_value[5] = {10, 30, 30, 0, -100}, current_generated_numbers[4], current_player_numbers[4];
-	bool player_success = true, player_wins = false;
+	bool input_error = false, player_success = true, player_wins = false;
+	time_t start_time, time_lapsed;
 
 	*current_round = *current_round + 1;
 
@@ -118,6 +134,7 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 	}
 
 	order_numbers(current_generated_numbers);
+	start_time = time(NULL);
 	for (int i = 0; i < 4; i++)
 	{
 		scanf("%d", &current_player_numbers[i]);
@@ -125,11 +142,19 @@ void play(unsigned int * level, unsigned int * current_round, unsigned int * cur
 
 	for (int i = 0; i < 4; i++)
 	{
+		if(!is_number_in_array(current_generated_numbers, current_player_numbers[i]))
+		{
+			input_error = true;
+			break;
+		}
+
 		if (current_player_numbers[i] != current_generated_numbers[i])
 		{
 			player_success = false;
 		}
 	}
+	
+	time_elapsed = time(NULL) - start_time;
 
 	if (player_success)
 	{
