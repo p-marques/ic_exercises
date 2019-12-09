@@ -21,11 +21,11 @@ int main(int argc, char **argv)
         puts("Unknown option");
         return 0;
     }
-    else if (command == 'i')
+    else if (command == 'd')
     {
         for (short i = 0, k = 0; i < get_string_length(argv[2]); i++)
         {
-            if (!is_upper(argv[2][i]))
+			if (!is_upper(argv[2][i]))
             {
                 etx[k] = argv[2][i];
                 k++;
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         
         printf("%s\n", etx);
     }
-    else if (command == 'd')
+    else if (command == 'i')
     {
         if (argc == 4)
         {
@@ -71,12 +71,12 @@ int get_string_length(char * etx)
     while (*(etx + count) != '\0')
         count++;
     
-    return count;
+    return ++count;
 }
 
 void reverse_string(char * txt)
 {
-    int size = get_string_length(txt), end = size - 1, begin = 0;
+    int size = get_string_length(txt) - 1, end = size - 1, begin = 0;
     char temp[size];
 
     for (begin = 0; begin < size; begin++)
@@ -86,7 +86,7 @@ void reverse_string(char * txt)
     }
 
     temp[begin] = '\0';
-
+	
     for (begin = 0; begin < size; begin++)
     {
         *(txt + begin) = temp[begin];
