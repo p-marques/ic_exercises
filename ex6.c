@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX 512
 #define WORD_MAX 32
@@ -103,11 +104,30 @@ int main (int argc, char **argv)
 	return 0;
 }
 
+int compare_strings(char * char_a, char * char_b)
+{
+  char a[WORD_MAX], b[WORD_MAX];
+  strcpy(a, char_a);
+  strcpy(b, char_b);
+
+  for (int i = 0; a[i]; i++)
+  {
+    a[i] = tolower(a[i]);
+  }
+
+  for (int i = 0; b[i]; i++)
+  {
+    b[i] = tolower(b[i]);
+  }
+
+  return strcmp(a, b);
+}
+
 int search_word(word * lista, char * str, int size)
 {
   for (int i = 0; i < size; i++)
   {
-    if(strcmp(strlwr(lista[i].str), strlwr(str)) == 0)
+    if(compare_strings(lista[i].str, str) == 0)
       return i;
   }
 

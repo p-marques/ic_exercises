@@ -8,4 +8,4 @@
 # Unignore all dirs
 !*/
 
-.exe
+*.exe
