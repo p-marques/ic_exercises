@@ -1,11 +1,11 @@
 ## Combination to ignore files without extensions ##
 # Ignore all
-#*
+*
 
 # Unignore all with extensions
-#!*.*
+!*.*
 
 # Unignore all dirs
-#!*/
+!*/
 
 .exe
