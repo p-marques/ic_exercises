@@ -9,16 +9,10 @@
             "name": "gcc build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
             "args": [
-                "-g",
-                "-Wall",
-                "-Wextra",
-                "-Wpedantic",
-                "-std=c99",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "-f",
+                "final_project/questions.ini"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -33,7 +27,7 @@
                 }
             ],
             "preLaunchTask": "gcc build active file",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "miDebuggerPath": "C:\\mingw-w64\\x86_64-8.1.0-win32-seh-rt_v6-rev0\\mingw64\\bin\\gdb.exe"
         }
     ]
 }
